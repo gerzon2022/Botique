@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="99e4f191-ea1c-45d4-afc1-28f0feb6b2de">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="this_date" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select * from tblitemdetails inner join tblcart on tblitemdetails.fld_lot_no=tblcart.fld_lot_no
+inner join tblcustomer on tblcart.fld_customer_code=tblcustomer.fld_customer_code
+inner join tblinvoice on tblcart.fld_invoice_no=tblinvoice.fld_invoice_no
+inner join tblinvoiceno on
+tblinvoiceno.fld_invoice_no=tblinvoice.fld_invoice_no 
+where tblinvoiceno.fld_invoice_date=$P{this_date}]]>
+	</queryString>
+	<field name="fld_item_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fld_item_desc" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fld_lot_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fld_catname" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fld_manu_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fld_item_price" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fld_ven_price" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fld_reorder_point" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fld_cart_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fld_invoice_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fld_customer_code" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fld_tax" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fld_price" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fld_qty" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fld_discount" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fld_subtotal" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fld_expiry" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fld_customer_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fld_lname" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fld_fname" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fld_mname" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fld_zone" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fld_st" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fld_city" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fld_province" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fld_total_invoice_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fld_invoice_subtotal" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fld_invoice_tax" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fld_invoice_total" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fld_invoice_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fld_invoice_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="Sum" class="java.lang.Double" incrementType="Group" incrementGroup="Total" calculation="Sum">
+		<variableExpression><![CDATA[$F{fld_invoice_total}]]></variableExpression>
+	</variable>
+	<variable name="page_count_for_real" class="java.lang.Integer" resetType="Page" incrementType="Page" calculation="Count">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="Current_page" class="java.lang.Integer" resetType="None">
+		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
+	</variable>
+	<group name="Invoice No">
+		<groupExpression><![CDATA[$F{fld_invoice_no}]]></groupExpression>
+		<groupHeader>
+			<band height="28">
+				<rectangle>
+					<reportElement x="16" y="8" width="515" height="20" uuid="13689757-d5ce-4403-8893-af7fc43489aa"/>
+				</rectangle>
+				<textField>
+					<reportElement x="16" y="7" width="111" height="20" uuid="ddd70d9f-e7e7-47d5-8645-e33515e5352d"/>
+					<textElement>
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{fld_invoice_no}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="Total">
+		<groupExpression><![CDATA[$F{fld_total_invoice_id}]]></groupExpression>
+		<groupFooter>
+			<band height="22">
+				<rectangle>
+					<reportElement x="16" y="1" width="515" height="20" uuid="815e3506-2a2e-41d2-af98-80682d891217"/>
+				</rectangle>
+				<textField pattern="#,##0.00">
+					<reportElement positionType="Float" x="464" y="0" width="55" height="20" uuid="b7433e67-a811-417e-9722-c72d971eee83"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{fld_invoice_total}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="324" y="2" width="100" height="20" uuid="31fcdec9-f3a9-44f9-9f55-c9f008dbb6fc"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Total:]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="103" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="-1" width="556" height="104" uuid="3bf91414-5eac-40ed-9a3f-d9bba546c12c"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="82" y="0" width="390" height="36" uuid="9e88d092-5670-498a-b721-274cc0882f3e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[JB PHARMA AND TRADE CENTER]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="174" y="79" width="207" height="20" uuid="083a141b-6705-4792-938a-ebf80dbcc07f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Daily Sales Report]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="159" y="36" width="237" height="20" uuid="40eb14c5-8236-4a4c-a2b1-66c451b75a42"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Sevallos Bldg., Roxas St.,Valencia City]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="159" y="56" width="237" height="20" uuid="a1acfb29-d583-41f8-a643-8f1675124506"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Non VAT TIN: 923-616-831-000]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="71" splitType="Stretch">
+			<textField pattern="MM/dd/yyyy">
+				<reportElement x="64" y="0" width="139" height="20" uuid="c94be295-0151-4f50-a796-04083fbc8995"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fld_invoice_date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="51" height="20" uuid="fb81bea2-9017-4c3e-9abb-a6d13bc70a9f"/>
+				<textElement textAlignment="Right">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Sales for]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="16" y="10" width="68" height="20" uuid="cfc7c479-ee9b-4c42-ac95-42ce5e9fcdac"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Lot no]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="84" y="10" width="240" height="20" uuid="b4ba9f6e-c6bc-4684-9ecc-a82aaf7cc426"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Decription]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="324" y="10" width="75" height="20" uuid="760cdc0c-a9b7-4ab0-a580-5b5cd9010d41"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Price]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="399" y="10" width="75" height="20" uuid="cf6a8e92-3585-43f5-9177-17c4d409a0ed"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Quantity]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="464" y="10" width="75" height="20" uuid="14396de7-a14d-41a0-bec9-a0a141ad923e"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Subtotal]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<rectangle>
+				<reportElement x="464" y="1" width="67" height="20" uuid="82dca7d2-cfed-4a25-aa48-1c6dca361703"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="399" y="1" width="65" height="20" uuid="e2d54f25-5034-4cc6-9b2a-81a61f760b8c"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="324" y="1" width="75" height="20" uuid="9a38a60f-ecea-4d0a-b019-ae0bc6bac2ce"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="84" y="1" width="240" height="20" uuid="ea6ab2df-20d4-42b8-a646-5b889799abe6"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="16" y="1" width="68" height="20" uuid="1d3709db-9931-4c6e-ba36-7618cb05e2ef"/>
+				<graphicElement>
+					<pen lineColor="#000000"/>
+				</graphicElement>
+			</rectangle>
+			<textField>
+				<reportElement x="94" y="0" width="230" height="20" uuid="838b4c26-3f60-4803-bfeb-31c732163533"/>
+				<textFieldExpression><![CDATA[$F{fld_item_desc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="16" y="0" width="68" height="20" uuid="cff3ba6c-24cb-4149-b629-38a78d6827d9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fld_lot_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="452" y="0" width="67" height="20" uuid="ee8e66eb-b0b6-4e97-94db-5cf95fb11553"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fld_subtotal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="398" y="0" width="65" height="20" uuid="3ef1d80e-1f69-4aa1-be12-8be25f9439b2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fld_qty}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="295" y="0" width="74" height="20" uuid="fd918b46-1d12-41ca-a581-6801c9e918ef"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fld_price}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="44" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="53" splitType="Prevent">
+			<textField>
+				<reportElement x="14" y="0" width="80" height="20" uuid="dc6dc317-e0b6-423d-9850-c67a3af0e508"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="94" y="0" width="40" height="20" uuid="f64d1a81-e05c-48a3-8401-39faf062250c"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch">
+			<rectangle>
+				<reportElement x="364" y="1" width="167" height="20" uuid="de58c31b-1b6f-4c21-87a0-e856abb30647"/>
+			</rectangle>
+			<textField>
+				<reportElement x="452" y="1" width="67" height="20" uuid="fbe8fbd2-8b9a-45c5-b455-a87d8d36d287"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Sum}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="335" y="0" width="100" height="20" uuid="e460b945-ce62-48da-8c71-9c26c891d62b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Grand Total:]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

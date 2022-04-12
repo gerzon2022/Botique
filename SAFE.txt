@@ -1,0 +1,310 @@
+#include <ShiftLCD.h>
+#include <stdlib.h>
+#include <math.h>
+////////////////////////////////////////////////Keypad//////////////////////////////////////////////////////////
+int keypressed = 0;
+int key;
+int keyboardPin = 1;    // Analog input pin that the keypad is attached to
+int keyboardValue = 0;   // value read from the keyboard
+//////////////////////////////////////////////////COUNTERSWITCH/////////////////////////////////////////////////
+int switchPin = 13; // choose the input pin (sensor)
+int val ; // variable for reading the pin status
+int counter;
+int currentState;
+int previousState;
+/////////////////////////////////////////////////input///////////////////////////////////////////////////
+int i;
+long turns = 0;
+long grams = 0;
+int gauge = 0;// int ni befor
+//////////////////////////////////////////////////////MotorSETUP////////////////////////////////////////////////
+int RPWM=9;
+int LPWM=11;
+// timer 0
+int L_EN=5;
+int R_EN=7;
+ShiftLCD lcd(2, 4, 3);
+
+void setup() {
+ 
+  // set up the LCD's number of columns and rows:
+  lcd.begin(16, 2);
+  // Print a message to the LCD.
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("Welcome");
+  Serial.print("Welcome");
+  delay(1000);
+  lcd.clear();
+  lcd.setCursor(0,1);
+  lcd.print("Loading");
+  Serial.print("Loading");
+  lcd.setCursor(0,1);
+  delay(2000);
+  lcd.clear();
+Serial.begin(9600);
+//////////////////////////////////////////////////////Motor SETUP////////////////////////////////////////////////
+
+
+ pinMode(switchPin, INPUT); // declare pushbutton as input
+//////
+for(int i=5;i<9;i++){
+   pinMode(i,OUTPUT);
+  }
+}
+
+
+
+
+void loop(){
+  
+    key=0;
+    gauge=0;
+    turns=0;
+    grams=0;
+   
+   
+
+    enterGauge();
+   
+    switch(key) 
+    {
+    case 2:
+    key=0;
+    if(gauge<20){
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("Out of Range");
+     delay(1000);
+    }
+    else{
+      enterGrams();  
+      
+      
+    }
+        
+    break;
+    }
+
+  
+}
+
+
+
+
+
+
+
+
+void enterGrams(){
+  
+       lcd.clear();
+       lcd.setCursor(0,0);
+       lcd.print("Enter Grams:");
+       while(key==0){
+         readkeyboard();
+         if(key>0){
+            break;
+          } 
+        lcd.setCursor(0,1);
+        grams = grams * 10 + (keypressed);
+         if ((grams > 32767) || (grams<0))
+          {
+            lcd.print("Out of Range");
+            gauge=0;
+            delay(1000); 
+            lcd.clear();
+          }
+          else{
+              lcd.print(grams);
+            }
+      }
+       if(key==1){
+            lcd.clear();
+            lcd.setCursor(0,0);
+            lcd.print("Canceled");
+            delay(1000);
+          }
+          else{
+              if(gauge<20){//grams limit
+                lcd.clear();
+                lcd.setCursor(0,0);
+                lcd.print("Out of Range");
+                delay(1000);
+                          }
+              else{
+                summary();
+                
+                  }
+            }
+}
+void summary(){
+ 
+   turns=0;
+  lcd.clear();
+              lcd.setCursor(0,0);
+               lcd.print(gauge);
+              lcd.print("wg ");
+             lcd.print(grams);
+               lcd.print("g");
+               lcd.setCursor(0,1);
+               lcd.print(" #-go,");
+               lcd.print("*-cancel");
+              lcd.setCursor(14,1);//* to cancel, # to proceed 
+              key=0;
+              readkeyboard();
+                  if(key==2){
+                    lcd.clear();
+                  lcd.setCursor(0,0);
+                  lcd.print("Turns * grams ");
+                  lcd.setCursor(0,1);
+                   turns=gramsTurns(grams,gauge);
+                  
+                  lcd.print(turns);
+                 count();
+                 
+                   
+                  }  
+              
+}
+void enterGauge(){
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Enter Gauge:");
+   
+    while(key==0){
+     
+      readkeyboard();
+     
+        if(key>0){
+          break;
+        }
+         
+      lcd.setCursor(0,1);
+       gauge=gauge *10 + (keypressed);
+  
+    
+       if ((gauge > 40) || (gauge<0)){
+          lcd.print("Out of Range");
+          gauge=0;
+          delay(1000); 
+          lcd.clear();
+          break;
+        }
+        else{
+            lcd.print(gauge);
+          }
+  }
+}
+void readkeyboard(){
+
+
+keyboardValue = analogRead(keyboardPin); // read the keyboard value (0 - 1023)
+ while (keyboardValue < 49){
+   //do nothing until a key is pressed
+ keyboardValue = analogRead(keyboardPin); 
+}//end of do nothing till a key is pressed                           
+//read the keyboard routine
+   while (keyboardValue > 48) {
+   keyboardValue = analogRead(keyboardPin); // read the value (0-1023)
+   
+   
+   if (keyboardValue <49){keyboardValue=0;}
+   if ((keyboardValue >50) && (keyboardValue < 58)){keypressed = 1;}
+   if ((keyboardValue >90) && (keyboardValue < 100)){keypressed = 2;}
+   if ((keyboardValue >140) && (keyboardValue < 150)){keypressed = 3;}
+   if ((keyboardValue >120) && (keyboardValue < 130)){keypressed = 4;}
+   if ((keyboardValue >200) && (keyboardValue < 212)){keypressed = 5;}
+   if ((keyboardValue >286) && (keyboardValue < 294)){keypressed = 6;}
+  if ((keyboardValue >300) && (keyboardValue < 308)){keypressed = 7;}
+  if ((keyboardValue >444) && (keyboardValue < 450)){keypressed = 8;}
+  if ((keyboardValue >552) && (keyboardValue < 560)){keypressed = 9;}
+  if ((keyboardValue >950) && (keyboardValue < 960)){keypressed = 0;}
+   if ((keyboardValue >892) && (keyboardValue < 904)){key = 1;}//*cancel
+  if ((keyboardValue >970) && (keyboardValue < 982)){key = 2;} //#ok
+  
+  
+  if (keyboardValue >982){keyboardValue=0;}
+  //NOTE: the values used above are all halfway between the value obtained with each keypress in previous test sketch 
+   }//wait until key no longer being pressed before continuing
+   
+   
+  }
+
+int gramsTurns(long gramsValue, long gaugeValue){
+  int result=0;
+
+  int constValue=2;
+ 
+  
+    for(int x=20; x<=40; x++){
+      if(gaugeValue==x){
+        result=gramsValue * constValue;
+        //counter=count();
+        exit;
+      }
+      constValue++;
+      
+    }
+      
+      return result;
+}
+
+
+void count(){
+
+  counter=0;
+lcd.setCursor(0,0);
+lcd.print("Ready...");
+delay(1000);
+      while( 1 )
+      {
+       
+      val = digitalRead(switchPin); // read input value
+              if (val == HIGH) { // check if the input is HIGH (button released)
+                  currentState = 1;
+                  }
+              else {
+                  currentState = 0;
+                  }
+      if(counter != turns){
+      digitalWrite(R_EN,HIGH);
+      digitalWrite(L_EN,HIGH);
+      analogWrite(RPWM,50); //Motor turns on
+      }
+      else {
+      digitalWrite(R_EN,LOW);
+      digitalWrite(L_EN,LOW);
+      analogWrite(RPWM,0);   //Motor turns off
+       break;
+      }
+               
+              
+                
+            if(currentState != previousState)
+            {
+              
+                if(currentState == 1){
+                counter = counter + 1;
+                lcd.clear();
+                lcd.setCursor(0,0);
+                lcd.print("Counter:");
+                lcd.setCursor(0,1);
+                lcd.print(counter);
+                Serial.println(counter);
+                }           
+   
+                 previousState = currentState;
+             }
+
+           
+      }//while loop
+      //return i;
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("Finished!");
+      delay(2000);
+      
+}
+
+
